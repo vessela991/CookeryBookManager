@@ -1,0 +1,42 @@
+<main xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorator="layouts/layout" layout:fragment="content"
+      class="d-md-flex flex-wrap">
+    <div class="container col-5 margin-top">
+        <h2 th:text=${title} class="align-center"></h2>
+        <form th:object="${book}" method="post" enctype="multipart/form-data">
+            <input type="hidden" th:value="${book.id}" name="id">
+
+            <div class="input-group flex-nowrap margin-bottom">
+                <label class="input-group-text" for="name">Name</label>
+                <input type="text" th:value="${book.name}" id="name" name="name" class="form-control">
+            </div>
+
+            <div class="margin-bottom">
+                <label class="input-group-text margin-bottom">Public or private</label>
+
+                <div class="form-check radio-input-indent">
+                    <input class="form-check-input" type="radio" name="isPublic" id="isPublicTrue" value="true"
+                           th:checked="${commonUtils.isBookPublic(book) == 1}">
+                    <label class="form-check-label" for="isPublicTrue">Public</label>
+                </div>
+
+                <div class="form-check radio-input-indent">
+                    <input class="form-check-input" type="radio" name="isPublic" id="isPublicFalse" value="false"
+                           th:checked="${commonUtils.isBookPublic(book) == 0}">
+                    <label class="form-check-label" for="isPublicFalse">Private</label>
+                </div>
+            </div>
+
+            <div class="d-grid gap-2 col-4 mx-auto margin-bottom">
+                <button type="submit" class="btn btn-primary" id="submit" name="submit"
+                        th:text="${title}" value="submit"></button>
+                <a class="btn btn-primary" href="/books">Cancel</a>
+            </div>
+
+            <div th:if="${error != null}" class="errors alert alert-danger">
+                <span th:text="${error}"></span>
+            </div>
+        </form>
+    </div>
+</main>

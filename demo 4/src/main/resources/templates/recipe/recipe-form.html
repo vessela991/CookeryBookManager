@@ -1,0 +1,52 @@
+<div th:fragment="recipe-form(recipe, isEdit)"  xmlns:th="http://www.thymeleaf.org">
+    <div class="input-group flex-nowrap margin-bottom">
+        <label class="input-group-text" for="name">Name</label>
+        <input type="text" th:value="${recipe.name}" id="name" name="name" class="form-control">
+    </div>
+
+    <div class="input-group flex-nowrap margin-bottom">
+        <label class="input-group-text" for="timeToCook">Time to cook</label>
+        <input type="number" min="0" th:value="${recipe.timeToCook}" id="timeToCook" name="timeToCook" class="form-control">
+    </div>
+
+    <div class="margin-bottom">
+        <label class="input-group-text margin-bottom" for="shortDescription">Short description</label>
+        <textarea name="shortDescription" rows="4" cols="50" th:text="${recipe.shortDescription}"
+                  id="shortDescription" class="form-control"></textarea>
+    </div>
+
+    <div class="margin-bottom">
+        <label class="input-group-text margin-bottom" for="longDescription">Long description</label>
+        <textarea name="longDescription" rows="4" cols="50" th:text="${recipe.longDescription}"
+                  id="longDescription" class="form-control"></textarea>
+    </div>
+
+    <div class="margin-bottom">
+        <label class="input-group-text margin-bottom" for="products">Products</label>
+        <textarea name="products" rows="4" cols="50" th:text="${commonUtils.removeBrackets(recipe.products)}"
+                  id="products" class="form-control"></textarea>
+    </div>
+
+    <div class="margin-bottom">
+        <label class="input-group-text margin-bottom" for="tags">Tags</label>
+        <textarea name="tags" rows="4" cols="50" th:text="${commonUtils.removeBrackets(recipe.tags)}"
+                  id="tags" class="form-control"></textarea>
+    </div>
+
+    <div th:if="${isEdit}" class="recipe-image-container">
+        <img th:src="@{'data:image/jpg;base64,'+ ${recipe.picture}}" class="picture-edit" alt="...">
+    </div>
+
+    <div class="input-group margin-bottom">
+        <input type="file" th:value="${recipe.picture}" class="form-control"
+               id="picture" name="picture" value="Upload">
+    </div>
+
+    <div class="d-grid gap-2 col-4 mx-auto margin-bottom">
+        <button th:text="${title}" type="submit" class="btn btn-primary" id="submit" name="submit" value="submit"></button>
+    </div>
+
+    <div th:if="${error != null}" class="errors alert alert-danger">
+        <span th:text="${error}"></span>
+    </div>
+</div>

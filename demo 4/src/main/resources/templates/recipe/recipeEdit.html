@@ -1,0 +1,17 @@
+<main xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorator="layouts/layout" layout:fragment="content"
+      class="d-md-flex flex-wrap">
+    <div class="container col-5 margin-top">
+        <h2 th:text=${title} class="text-center"></h2>
+        <form th:object="${recipe}" method="post" th:action="@{'/recipes/' + ${recipe.id} + '/edit'}"
+              enctype="multipart/form-data">
+            <input type="hidden" th:value="${recipe.id}" name="id">
+            <div class="input-group flex-nowrap margin-bottom">
+                <label class="input-group-text" for="cookeryBookName">Cookery Book Name</label>
+                <input readonly type="text" id="cookeryBookName" th:value="${recipe.cookeryBookName}">
+            </div>
+            <div th:replace="recipe/recipe-form :: recipe-form(${recipe}, true)"></div>
+        </form>
+    </div>
+</main>

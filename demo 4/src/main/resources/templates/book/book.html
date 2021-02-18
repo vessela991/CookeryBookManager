@@ -1,0 +1,51 @@
+<main xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/layout" layout:fragment="content"
+      xmlns:th="http://www.thymeleaf.org">
+    <div class="d-md-flex flex-wrap" >
+        <div th:each="recipe : ${recipes}" class="card card-style">
+            <div class="image-container">
+                <img th:src="${'data:image/jpg;base64,'+recipe.picture}"
+                     class="card-img-top" alt="..."/>
+            </div>
+
+            <div class="card-body">
+                <h5 class="card-title" th:text = "*{name}"></h5>
+                <p class="card-text" th:text = "*{shortDescription}"></p>
+            </div>
+
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item" th:text = "@{${recipe.timeToCook} + ' minutes'}"></li>
+                <li class="list-group-item" th:text = "${commonUtils.removeBrackets(recipe.products)}"></li>
+                <li class="list-group-item" th:text = "${commonUtils.removeBrackets(recipe.tags)}"></li>
+
+                <li class="list-group-item d-flex justify-content-center">
+                    <form><button type="submit" class="btn btn-primary" th:formaction="@{'/recipes/' + ${recipe.id}}"
+                            formmethod="get">
+                        View recipe
+                    </button></form>
+                </li>
+
+                <li th:if="${commonUtils.isOwnerOrAdmin(loggedUser, recipe)}"
+                    class="list-group-item d-flex justify-content-around">
+                    <form>
+                        <button type="submit" class="btn btn-primary" th:formaction="@{'/recipes/' + ${recipe.id} + '/edit'}"
+                            formmethod="get">
+                        Edit
+                    </button></form>
+                    <form><button type="submit" name="id" class="btn btn-danger" formaction="/recipe"
+                            formmethod="post" th:value="*{id}">
+                        Delete
+                    </button></form>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div>
+        <form>
+            <button th:if="${!commonUtils.isUserLoggedIn(loggedUser)}" type="submit" class="btn btn-primary" th:formaction="@{'/recipes/create'}"
+                      formmethod="get">
+            Add recipe
+            </button>
+        </form>
+    </div>
+</main>

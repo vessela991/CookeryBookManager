@@ -1,0 +1,75 @@
+<main xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/layout" layout:fragment="content"
+      xmlns:th="http://www.thymeleaf.org">
+    <div class="container col-5 margin-top">
+        <h2 th:text="${title}" class="text-center"></h2>
+        <form th:object="${user}" method="post" action="/users/edit" enctype="multipart/form-data">
+            <input type="hidden" th:value="${user.id}" name="id">
+
+            <div class="input-group flex-nowrap margin-bottom">
+                <label class="input-group-text" for="username">Username</label>
+                <input readonly type="text" th:value="${user.username}" id="username" class="form-control">
+            </div>
+
+            <div class="input-group flex-nowrap margin-bottom">
+                <label class="input-group-text" for="email">Email</label>
+                <input readonly type="email" th:value="${user.email}" id="email" class="form-control">
+            </div>
+
+            <div class="margin-bottom" th:if="${commonUtils.isUserAdmin(loggedUser)}">
+                <label class="input-group-text margin-bottom">User Role</label>
+
+                <div class="form-check radio-input-indent">
+                    <input class="form-check-input" type="radio" name="userRole" id="userRoleAdmin"
+                           value="ADMIN" th:checked="${commonUtils.isRoleAdmin(user.userRole)}">
+                    <label class="form-check-label" for="userRoleAdmin">Admin</label>
+                </div>
+
+                <div class="form-check radio-input-indent">
+                    <input class="form-check-input" type="radio" name="userRole" id="userRoleUser"
+                           value="USER" th:checked="${commonUtils.isRoleUser(user.userRole)}">
+                    <label class="form-check-label" for="userRoleUser">User</label>
+                </div>
+            </div>
+
+            <div class="margin-bottom">
+                <input type="text" th:value="${user.gender}" id="userGender" class="d-none">
+                <label class="input-group-text margin-bottom">Gender</label>
+                <div class="form-check radio-input-indent">
+                    <input class="form-check-input" type="radio" name="gender" id="genderMale"
+                           value="MALE" th:checked="${commonUtils.isGenderMale(user.gender)}">
+                    <label class="form-check-label" for="genderMale">Male</label>
+                </div>
+
+                <div class="form-check radio-input-indent">
+                    <input class="form-check-input" type="radio" name="gender" id="genderFemale"
+                           value="FEMALE" th:checked="${commonUtils.isGenderFemale(user.gender)}">
+                    <label class="form-check-label" for="genderFemale">Female</label>
+                </div>
+
+                <div class="form-check radio-input-indent">
+                    <input class="form-check-input" type="radio" name="gender" id="genderOther"
+                           value="OTHER" th:checked="${commonUtils.isGenderOther(user.gender)}">
+                    <label class="form-check-label" for="genderOther">Other</label>
+                </div>
+            </div>
+
+            <div class="recipe-image-container">
+                <img th:src="@{'data:image/jpg;base64,'+ ${user.picture}}" class="picture-edit" alt="...">
+            </div>
+
+            <div class="input-group margin-bottom">
+                <input type="file" class="form-control" th:value="${user.picture}" id="picture" name="picture" value="Upload">
+            </div>
+
+            <div class="d-grid gap-2 col-4 mx-auto margin-bottom d-flex">
+                <button type="submit" class="btn btn-primary" id="submit" name="submit" value="submit">Edit</button>
+                <a class="btn btn-primary" href="/users">Cancel</a>
+            </div>
+
+            <div th:if="${error != null}" class="errors alert alert-danger">
+                <span th:text="${error}"></span>
+            </div>
+        </form>
+    </div>
+</main>

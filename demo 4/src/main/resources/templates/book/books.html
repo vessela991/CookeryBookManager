@@ -1,0 +1,46 @@
+<main layout:decorator="layouts/layout"
+      layout:fragment="content" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+    <div class="d-md-flex flex-wrap">
+        <div class="card card-style card-custom-style" id="cookeryBookCardId" th:each="book : ${books}">
+            <div class="input-group flex-nowrap margin-bottom">
+                <input class="form-control" id="name" name="name" readonly th:value="${book.name}" type="text">
+            </div>
+
+            <div class="input-group flex-nowrap margin-bottom">
+                <img th:src="@{images/cookery-book.jpg}">
+            </div>
+
+            <div class="input-group flex-nowrap margin-bottom">
+                <label class="input-group-text" for="username">Owner</label>
+                <input class="form-control" id="username" name="username" readonly th:value="${book.username}"
+                       type="text">
+            </div>
+            <li class="list-group-item d-flex justify-content-center ">
+                <form>
+                    <button class="btn btn-primary" formmethod="get" style="" th:formaction="@{'/books/' + ${book.id}}"
+                            type="submit">
+                        View book
+                    </button>
+                </form>
+            </li>
+            <li class="list-group-item d-flex justify-content-around "
+                th:if="${commonUtils.isOwnerOrAdmin(loggedUser, book)}">
+                <form>
+                    <button th:if="${commonUtils.isOwnerOrAdmin(loggedUser, book)}"
+                            class="btn btn-primary" formmethod="get" th:formaction="@{'/books/' + ${book.id} + '/edit'}"
+                            type="submit">
+                        Edit
+                    </button>
+                </form>
+                <form>
+                    <button th:if="${commonUtils.isOwnerOrAdmin(loggedUser, book)}"
+                            class="btn btn-danger" name="id"  formmethod="post" th:formaction="@{'/books/' + ${book.id} + '/delete'}"
+                            type="submit" th:value="${book.id}">Delete
+                    </button>
+                </form>
+
+            </li>
+        </div>
+    </div>
+</main>

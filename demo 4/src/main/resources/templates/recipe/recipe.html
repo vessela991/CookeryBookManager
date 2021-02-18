@@ -1,0 +1,33 @@
+<main xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorator="layouts/layout" layout:fragment="content"
+      class="d-md-flex flex-wrap">
+    <div th:object="${recipe}" class="card recipe-card-style d-flex justify-content-center">
+        <div class="recipe-image-container">
+            <img th:src="@{'data:image/jpg;base64,'+ ${recipe.picture}}" class="card-img-top" alt="..."/>
+        </div>
+
+        <div class="card-body">
+            <p class="card-text" th:text = "@{'From book: ' + ${recipe.cookeryBookName}}"></p>
+            <h5 class="card-title" th:text="${recipe.name}"></h5>
+            <p class="card-text" th:text="${recipe.shortDescription}"></p>
+            <textarea class="card-text tr-w100" rows="8" th:text="${recipe.longDescription}">
+            </textarea>
+        </div>
+
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item" th:text = "${recipe.timeToCook} + ' minutes'"></li>
+            <li class="list-group-item" th:text = "${commonUtils.removeBrackets(recipe.products)}"></li>
+            <li class="list-group-item" th:text = "${commonUtils.removeBrackets(recipe.tags)}"></li>
+        </ul>
+
+        <div class="card-body" th:if="${commonUtils.isOwnerOrAdmin(loggedUser, recipe)}">
+            <form class="d-inline" method="get" th:action="@{'/recipes/' + ${recipe.id} + '/edit'}">
+                <button type="submit" class="btn btn-primary">Edit</button>
+            </form>
+            <form class="d-inline" method="post" th:action="@{'/recipes/' + ${recipe.id} + '/delete'}">
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        </div>
+    </div>
+</main>

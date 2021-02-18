@@ -1,0 +1,69 @@
+<main xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/layout" layout:fragment="content"
+      xmlns:th="http://www.thymeleaf.org">
+    <div class="d-md-flex flex-wrap" >
+        <div th:each="user : ${users}" id="usersCardDiv" class="card card-style">
+            <div class="input-group flex-nowrap margin-bottom">
+                <label class="input-group-text" for="username">Username</label>
+                <input readonly type="text" th:value="${user.username}" id="username" name="username" class="form-control">
+            </div>
+
+            <div class="input-group flex-nowrap margin-bottom">
+                <label class="input-group-text" for="email">Email</label>
+                <input readonly type="email" th:value="${user.email}" id="email" name="email" class="form-control">
+            </div>
+
+            <div class="margin-bottom">
+                <label class="input-group-text margin-bottom">User Role</label>
+
+                <div class="form-check radio-input-indent">
+                    <input readonly class="form-check-input" type="radio" th:name="@{userRole + ${user.id}}" id="userRoleAdmin"
+                           value="ADMIN" th:checked="${commonUtils.isRoleAdmin(user.userRole)}">
+                    <label class="form-check-label" for="userRoleAdmin">Admin</label>
+                </div>
+
+                <div class="form-check radio-input-indent">
+                    <input readonly class="form-check-input" type="radio" th:name="@{userRole + ${user.id}}" id="userRoleUser"
+                           value="USER" th:checked="${commonUtils.isRoleUser(user.userRole)}">
+                    <label class="form-check-label" for="userRoleUser">User</label>
+                </div>
+            </div>
+
+            <div class="margin-bottom">
+                <label class="input-group-text margin-bottom">Gender</label>
+                <div class="form-check radio-input-indent">
+                    <input readonly class="form-check-input" type="radio" th:name="@{gender + ${user.id}}" id="genderMale"
+                           value="MALE" th:checked="${commonUtils.isGenderMale(user.gender)}">
+                    <label class="form-check-label" for="genderMale">Male</label>
+                </div>
+
+                <div class="form-check radio-input-indent">
+                    <input readonly class="form-check-input" type="radio" th:name="@{gender + ${user.id}}" id="genderFemale"
+                           value="FEMALE" th:checked="${commonUtils.isGenderFemale(user.gender)}">
+                    <label class="form-check-label" for="genderFemale">Female</label>
+                </div>
+
+                <div class="form-check radio-input-indent">
+                    <input readonly class="form-check-input" type="radio" th:name="@{gender + ${user.id}}" id="genderOther"
+                           value="OTHER" th:checked="${commonUtils.isGenderOther(user.gender)}">
+                    <label class="form-check-label" for="genderOther">Other</label>
+                </div>
+            </div>
+
+            <div class="recipe-image-container">
+                <img th:src="@{'data:image/jpg;base64,'+ ${user.picture}}" class="card-img-top" alt="...">
+            </div>
+
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-around">
+                    <form class="d-inline" method="get" th:action="@{'/users/'+ ${user.id}}">
+                        <button type="submit" class="btn btn-primary">Edit</button>
+                    </form>
+                    <form class="d-inline" method="post" action="/users/delete">
+                        <button type="submit" th:value="${user.id}" name="id" class="btn btn-danger">Delete</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</main>

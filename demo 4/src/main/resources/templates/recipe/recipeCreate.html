@@ -1,0 +1,20 @@
+<main xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorator="layouts/layout" layout:fragment="content"
+      class="d-md-flex flex-wrap">
+    <div class="container col-5 margin-top">
+        <h2 th:text=${title} class="text-center"></h2>
+        <form th:object="${recipe}" method="post" action="/recipes/create" enctype="multipart/form-data">
+            <div class="input-group flex-nowrap margin-bottom">
+                <label class="input-group-text" for="cookeryBookName">Cookery Book Name</label>
+                <select class="form-control" name="cookeryBookName" id="cookeryBookName">
+                    <option th:each="book : ${books}"
+                            th:value="${book.name}"
+                            th:text="${book.name}">
+                    </option>
+                </select>
+            </div>
+            <div th:replace="recipe/recipe-form :: recipe-form(${recipe}, false)"></div>
+        </form>
+    </div>
+</main>
